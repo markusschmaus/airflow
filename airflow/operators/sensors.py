@@ -80,13 +80,13 @@ class BaseSensorOperator(BaseOperator):
 
 class SqlSensor(BaseSensorOperator):
     """
-    Runs a sql statement until a criteria is met. It will keep trying until
+    Runs a sql statement until a criteria is met. It will keep trying as long
     sql returns no row, or if the first cell in (0, '0', '').
 
     :param conn_id: The connection to run the sensor against
     :type conn_id: string
-    :param sql: The sql to run. To pass, it needs to return at least one cell
-        that contains a non-zero / empty string value.
+    :param sql: The sql to run. To pass, it needs to return at least one row
+        and the first cell in the first row contains a non-zero / empty string value.
     """
     template_fields = ('sql',)
     template_ext = ('.hql', '.sql',)
@@ -109,7 +109,6 @@ class SqlSensor(BaseSensorOperator):
                 return False
             else:
                 return True
-            print(records[0][0])
 
 
 class MetastorePartitionSensor(SqlSensor):
